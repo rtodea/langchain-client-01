@@ -1,19 +1,17 @@
-from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
-from pytest import fixture
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-import os
+from langchain_openai import ChatOpenAI
+from pytest import fixture
+
+from tests.assertions import assert_env
+
 
 @fixture(autouse=True)
 def run_before_and_after_tests():
     load_dotenv("../.env")
-    expected_envs = [
-        "LANGCHAIN_API_KEY",
-        "OPENAI_API_KEY"
-    ]
-    for e in expected_envs:
-        assert os.environ.get(e, None) is not None
+    assert_env(["LANGCHAIN_API_KEY",
+                "OPENAI_API_KEY", ])
 
 
 def test_openai():
